@@ -23,6 +23,7 @@ Route::get('customers', [CustomerController::class, 'getCustomers'])->name('cust
 
 // dashboard
 Route::get('sales', [DashboardController::class, 'saleOverview'])->name('sales');
+Route::get('product', [DashboardController::class, 'productOverview'])->name('product');
 
 // pdf
 Route::post('/generate-pdf', [PdfController::class, 'sales']);

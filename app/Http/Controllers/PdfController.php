@@ -12,7 +12,6 @@ class PdfController extends Controller {
     {
         $query = Sale::query();
 
-        // Apply search filter (id or customer name)
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
@@ -23,15 +22,12 @@ class PdfController extends Controller {
             });
         }
 
-        // Apply status filter
         if ($request->filled('status')) {
             $query->where('status', $request->input('status'));
         }
 
-        // Get all matching sales (no pagination here)
         $sales = $query->with(['customer', 'saleItems.product'])->latest()->get();
 
-        // Load into PDF view
         $pdf = Pdf::loadView('pdf.sales', [
             'sales' => $sales,
         ]);
@@ -44,9 +40,7 @@ class PdfController extends Controller {
         $pdf = Pdf::loadView('pdf.customer', [
             'customer' => $customer
         ]);
-// dd($customer->sales->pluck('saleItems')->flatten()->pluck('product'));
 
         return $pdf->download('Customer-report.pdf');
-        // return response()->json($customer);
     }
 }
